@@ -1,0 +1,40 @@
+{
+  "name": "smart-color",
+  "version": "1.0.10",
+  "description": "",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirismaili/smart-color"
+  },
+  "license": "MIT",
+  "author": "S. Mahdi Mir-Ismaili <s.m.mirismaili@gmail.com>",
+  "type": "module",
+  "bin": {
+    "inv-lum": "src/cli.js"
+  },
+  "exports": {
+    "./*": "./lib/*"
+  },
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "patch-version": "npm version patch --no-git-tag-version",
+    "increase-minor-version": "npm version minor --no-git-tag-version",
+    "increase-major-version": "npm version major --no-git-tag-version",
+    "tag-this-version": "node -e \"require('child_process').execSync('git tag v' + require('./package.json').version)\""
+  },
+  "dependencies": {
+    "commander": "^9.4.0",
+    "num-inv-func": "1.0.1",
+    "objecter": "1.0.2"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "enhanced-console-logs": "1.0.2"
+  }
+}
