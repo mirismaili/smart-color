@@ -3,10 +3,10 @@
  * @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
  */
 
-import o from 'objecter'
+import o from 'objectools'
 import WEB_COLORS from './web-colors.js'
 
-export default class Color {
+export default class RGBColor {
   #r = 0
   #g = 0
   #b = 0
@@ -17,27 +17,23 @@ export default class Color {
   #alpha = 100
   #alpha255 = 255
 
-  /**
-   * @param {RgbInputParams|[number?,number?,number?,number?]|string|number} rgbInputParamsOrRgbArrayOrHexFormatOrRed
-   * @param {number} green
-   * @param {number} blue
-   * @param {number} alpha
-   */
-  constructor ({
-    red = 0, green = 0, blue = 0, alpha = 100, r = red / 255, g = green / 255, b = blue / 255, a = alpha / 100,
-  } = {}) { // noinspection JSCheckFunctionSignatures
-    this.set(...arguments)
+  constructor(value: number)
+  constructor(hexString: HexColor)
+  constructor(red: number, green: number, blue: number, alpha?: number)
+  constructor([r, g, b, a]: [number, number, number] | [number, number, number, number])
+  constructor({red, green, blue, alpha}: { red: number, green: number, blue: number, alpha?: number })
+  constructor({r, g, b, a}: { r: number, g: number, b: number, a?: number })
+  constructor(...args: any[]) { // noinspection JSCheckFunctionSignatures
+    this.set(...args)
   }
 
-  /**
-   * @param {RgbInputParams|[number?,number?,number?,number?]|string|number} rgbInputParamsOrRgbArrayOrHexFormatOrRed
-   * @param {number} green
-   * @param {number} blue
-   * @param {number} alpha
-   */
+  set(red?: number, green?: number, blue?: number, alpha?: number): void
+  set([r, g, b, a]: [number, number, number, number]): void
+  set({red, green, blue, alpha}: { red?: number, green?: number, blue?: number, alpha?: number }): void
+  set({r, g, b, a}: { r?: number, g?: number, b?: number, a?: number }): void
   set ({
     red = 0, green = 0, blue = 0, alpha = 100, r = red / 255, g = green / 255, b = blue / 255, a = alpha / 100,
-  } = {}) {
+       }: any = {}) {
     const input = arguments[0] ?? {r: 0, g: 0, b: 0, a: 1}
     const inputType = typeof input
 
@@ -54,7 +50,7 @@ export default class Color {
       return this
     }
 
-    if (inputType === 'number') { // noinspection JSValidateTypes
+    if (inputType === 'number') { // @ts-expect-error
       this.RGB = arguments
       return this
     }
@@ -68,8 +64,8 @@ export default class Color {
 
     const match = input.match(/^rgba?\s*\(\s*(.+)\s*\)$/i) // https://regex101.com/r/TvtRCL/1
     if (match) { // `rgb[a](...)` format:
-      const values = match[1].split(/[ ,/]+/)
-      this.RGB = values.slice(0, 3).map(v => +v)
+      const values = match[1].split(/[ ,/]+/) as [string, string, string] | [string, string, string, string]
+      this.RGB = values.slice(0, 3).map((v) => +v)
       const aa = values[3]
       if (!aa) this.a = 1
       else if (aa.endsWith('%')) this.alpha = +aa.slice(0, -1)
@@ -144,15 +140,17 @@ export default class Color {
     this.#alpha = Math.round(this.#a * 100)
   }
   set rgb ([r, g, b, a]) {
-    if (typeof r === 'number') this.r = r
-    if (typeof g === 'number') this.g = g
-    if (typeof b === 'number') this.b = b
+    // noinspection SuspiciousTypeOfGuard
+    if (typeof r === 'number') this.r = r // noinspection SuspiciousTypeOfGuard
+    if (typeof g === 'number') this.g = g // noinspection SuspiciousTypeOfGuard
+    if (typeof b === 'number') this.b = b // noinspection SuspiciousTypeOfGuard
     if (typeof a === 'number') this.a = a
   }
   set RGB ([red, green, blue, alpha]) {
-    if (typeof red === 'number') this.red = red
-    if (typeof green === 'number') this.green = green
-    if (typeof blue === 'number') this.blue = blue
+    // noinspection SuspiciousTypeOfGuard
+    if (typeof red === 'number') this.red = red // noinspection SuspiciousTypeOfGuard
+    if (typeof green === 'number') this.green = green // noinspection SuspiciousTypeOfGuard
+    if (typeof blue === 'number') this.blue = blue // noinspection SuspiciousTypeOfGuard
     if (typeof alpha === 'number') this.alpha = alpha
   }
   set value (value) { // https://jsben.ch/ZJB9W
@@ -195,16 +193,6 @@ export default class Color {
   }
 }
 
-/**
- * @typedef {Object} RgbInputParams
- * @property {number} [red=0] An integer in `[0, 255]` interval
- * @property {number} [green=0] An integer in `[0, 255]` interval
- * @property {number} [blue=0] An integer in `[0, 255]` interval
- * @property {number} [alpha=0] An integer in `[0, 100]` interval
- * @property {number} [r=red/255] An alternative for **red** channel as a number in `[0, 1]` interval
- * @property {number} [g=green/255] An alternative for **green** channel as a number in `[0, 1]` interval
- * @property {number} [b=blue/255] An alternative for **blue** channel as a number in `[0, 1]` interval
- * @property {number} [a=alpha/100] An alternative for **alpha** channel as a number in `[0, 1]` interval
- */
+const REVERSE_WEB_COLORS = o(WEB_COLORS).flip()
 
-const REVERSE_WEB_COLORS = o(WEB_COLORS).flip().o
+export type HexColor = `#${string}`

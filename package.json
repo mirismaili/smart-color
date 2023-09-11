@@ -1,48 +1,52 @@
 {
-  "name" : "smart-color",
-  "version" : "1.1.4",
-  "description" : "",
-  "keywords" : [],
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/mirismaili/smart-color"
+  "name": "smart-color",
+  "version": "1.2.1",
+  "description": "",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mirismaili/smart-color"
   },
-  "license" : "MIT",
-  "author" : "S. Mahdi Mir-Ismaili <s.m.mirismaili@gmail.com>",
-  "type" : "module",
-  "bin" : {
-    "inv-lum": "src/cli.js"
+  "license": "MIT",
+  "author": "S. Mahdi Mir-Ismaili <s.m.mirismaili@gmail.com>",
+  "type": "module",
+  "bin": {
+    "inv-lum": "cli.js"
   },
   "exports": {
-    "./*" : "./lib/*",
-    "./Color" : "./lib/Color.js",
-    "./ColorCustomInspect" : "./lib/ColorCustomInspect.js",
-    "./convertors" : "./lib/convertors.js",
-    "./luminance" : "./lib/luminance.js",
-    "./luminanceInverter" : "./lib/luminanceInverter.js",
-    "./recolorFilter" : "./lib/recolorFilter.js",
-    "./temp" : "./lib/temp.js",
-    "./web-colors" : "./lib/web-colors.js"
+    "./*": "./dist/*",
+    "./RGBColor": "./dist/RGBColor.js",
+    "./ColorCustomInspect": "./dist/ColorCustomInspect.js",
+    "./convertors": "./dist/convertors.js",
+    "./luminance": "./dist/luminance.js",
+    "./luminanceInverter": "./dist/luminanceInverter.js",
+    "./recolorFilter": "./dist/recolorFilter.js",
+    "./web-colors": "./dist/web-colors.js"
   },
   "files": [
-    "src",
-    "lib"
+    "dist",
+    "cli.js"
   ],
   "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
     "patch-version": "npm version patch --no-git-tag-version",
     "increase-minor-version": "npm version minor --no-git-tag-version",
     "increase-major-version": "npm version major --no-git-tag-version",
     "tag-this-version": "node -e \"require('child_process').execSync('git tag v' + require('./package.json').version)\""
   },
   "dependencies": {
-    "commander": "^9.4.0",
-    "num-inv-func": "1.0.1",
-    "objecter": "1.0.2"
-  },
-  "engines": {
-    "node": ">=16"
+    "commander": "^11.0.0",
+    "num-inv-func": "1.1.1",
+    "objectools": "1.0.4"
   },
   "devDependencies": {
-    "enhanced-console-logs": "1.0.2"
+    "@types/commander": "^2.12.2",
+    "@types/node": "^20.5.9",
+    "enhanced-console-logs": "1.0.2",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

@@ -3,11 +3,12 @@
  * @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
  */
 
-import Color from './Color.js'
+import RGBColor from './RGBColor.js'
 
-// The below customization should happen in "Color.js" file itself. But, webpack (until v5.74.0) has some issues with
-// it. So we pull it out here and now, node.js users should import this file separately (in addition to "Color.js") if
-// they want custom inspection. :(
+// The below customization should happen in "RGBColor.js" file itself. But, webpack (until v5.74.0) has some issues
+// with
+// it. So we pull it out here and now, node.js users should import this file separately (in addition to "RGBColor.js")
+// if they want custom inspection. :(
 //
 // The first webpack bug is the issue with "node:" scheme/prefix. See: https://github.com/webpack/webpack/issues/14166.
 // (Here is a workaround for it: https://github.com/webpack/webpack/issues/13290#issuecomment-987880453)
@@ -16,5 +17,6 @@ import Color from './Color.js'
 // code changes (instead of hot-reload)!
 
 await import('node:util').then((util) => {
-  Color.prototype[util.inspect.custom] = function () { return this.toString() }
+  // @ts-expect-error
+  RGBColor.prototype[util.inspect.custom] = function () { return this.toString() }
 }).catch(() => {}) // Ignore `import` error to sure it works properly in both node and browser environments

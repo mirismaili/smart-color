@@ -5,9 +5,9 @@
  * @author {@link https://mirismaili.github.io S. Mahdi Mir-Ismaili}
  */
 
-import {Command} from 'commander'
-import Color from '../lib/Color.js'
-import LuminanceInverter from '../lib/luminanceInverter.js'
+import { Command } from 'commander'
+import LuminanceInverter from './dist/luminanceInverter.js'
+import RGBColor from './dist/RGBColor.js'
 
 const program = new Command()
 
@@ -26,10 +26,15 @@ program
 
 program.parse(process.argv)
 
+if (program.args.length === 0) {
+  program.help()
+  process.exit()
+}
+
 const options = program.opts()
 const {args} = program
 const colors = args.map(arg => arg.split(/\s*[,/-]\s*/).map(anArg => anArg.trim())).flat().filter(Boolean)
 
 const luminanceInverter = LuminanceInverter({darkestColor: options.darkest, lightestColor: options.lightest})
 
-console.info(colors.map(color => luminanceInverter(new Color(color)).hex).join('\n'))
+console.info(colors.map(color => luminanceInverter(new RGBColor(color)).hex).join('\n'))
